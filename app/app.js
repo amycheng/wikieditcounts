@@ -4,10 +4,11 @@ console.log("app running");
 var http = require('http');
 var fs = require('fs');
 var request = require('request');
-var cheerio = require('cheerio');
-var moment = require('moment');
 var io = require('socket.io');
-var mime = require('mime');
+
+
+//util methods
+// var util = require('./util');
 
 //configuration variables
 var config = require('./config');
@@ -35,8 +36,8 @@ for (var i = 0; i < config.ipBlocks.length; i++) {
 console.log("finished parsing ip blocks!");
 
 //our server
-var server = http.createServer(function(request, response){
-  var path = request.url;
+var server = http.createServer(function(req, response){
+  var path = req.url;
   fs.readFile(__dirname+path,'utf8', function(error, data){
     if (error){
       console.log(error);
@@ -71,40 +72,7 @@ io.sockets.on('connection', function (socket){
     }, 5000);
 });
 
-//our methods to connect and parse stuff
-var konnect = function(ip,callback){
-  // console.log('konnecting');
-  request("http://en.wikipedia.org/w/index.php?limit=50&tagfilter=&title=Special%3AContributions&contribs=user&target="+ip+"+&namespace=&tagfilter=&year=2014&month=-1", function(err, resp, body) {
-    if (err) {
-      return;
-    }
-    if (body) {
-      parsePage(body,callback);
-      // if (typeof callback == "function"){
-      //   console.log("has callback");
-      //   callback.apply();
-      // }
-    }
-  });
-};
 
-var parsePage = function(data,callback){
-  $ = cheerio.load(data);
-  $(selector).each(function(i) {
-    var $_this = $(this);
-      //parse the timestamp of edit
-      var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
-      if (moment(timestamp).isAfter(dateThresold)) {
-        console.log($_this.find(titleSelector).text());
-        console.log(moment(timestamp).format('h:mm'));
-        mostRecent={"title":$_this.find(titleSelector).text(),"timestamp":moment(timestamp).format('h:mm')};
-        dateThresold = timestamp;
-        if (typeof callback == "function"){
-          callback.apply();
-        };
-      };
-      // console.log(timestamp);
-    });
-};
+
 
 
