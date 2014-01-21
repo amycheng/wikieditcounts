@@ -1,0 +1,11 @@
+var config = {};
+
+config.ipBlocks=
+//"last" describes the last two digits of the ip address
+//"ip" should be the first ip address in the block
+[
+  {"ip":"00.000.000.","last":00,"blockSize":00},
+  {"ip":"00.000.000.","last":00,"blockSize":00}
+];
+
+module.exports = config;
