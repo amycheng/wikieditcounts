@@ -11,7 +11,7 @@ module.exports={
   //methods
   connect: function(ip,callback){
     _this = this;
-    //methods for connecting to wikipedia
+    //method for connecting to wikipedia
     request("http://en.wikipedia.org/w/index.php?limit=50&tagfilter=&title=Special%3AContributions&contribs=user&target="+ip+"+&namespace=&tagfilter=&year=2014&month=-1", function(err, resp, body) {
       if (err) {
         return;
@@ -51,82 +51,23 @@ module.exports={
       });
     });
   },
-  //DOM selectors for the wikipedia page
   parse: function(data,callback){
+    // method for grabbing the most recently edited, this is an asynchronous method
+    // data: the DOM we're navigating, we're getting this from connect()
+    //DOM selectors for the wikipedia page
     var
     selector= "#mw-content-text ul li",
     titleSelector= ".mw-contributions-title",
-    dateSelector= ".mw-changeslist-date",
-    // dateThresold= config.dateThresold;
-
-    // method for grabbing the most recently edited, this is an asynchronous method
-    // data: the DOM we're navigating
+    dateSelector= ".mw-changeslist-date";
 
     $ = cheerio.load(data);
     $(selector).each(function(i) {
       var $_this = $(this);
       var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
       var entry = {"title":$_this.find(titleSelector).text(),"timestamp":timestamp};
-
        if (typeof callback == "function"){
            callback.call(undefined,entry);
        };
-        //parse the timestamp of edit and compare to our dateThresold
-        // var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
-        // if (moment(timestamp).isAfter(dateThresold)) {
-        //   mostRecent={"title":$_this.find(titleSelector).text(),"timestamp":moment(timestamp).format('h:mm')};
-        //   config.dateThresold = timestamp;
-        //   if (typeof callback == "function"){
-        //     callback.call(undefined,mostRecent);
-        //   };
-        // };
       });
   }
 };
-
-/*
-// methods
-var getWiki = function(title){
-//title is the title of the wikipedia entry
-  wikijs.page(title, function(err, data){
-    data.images(function(err, content){
-      console.log(content);
-    });
-  });
-};
-
-var konnect = function(ip,callback){
-  // console.log('konnecting');
-  request("http://en.wikipedia.org/w/index.php?limit=50&tagfilter=&title=Special%3AContributions&contribs=user&target="+ip+"+&namespace=&tagfilter=&year=2014&month=-1", function(err, resp, body) {
-    if (err) {
-      return;
-    }
-    if (body) {
-      parsePage(body,callback);
-      // if (typeof callback == "function"){
-      //   console.log("has callback");
-      //   callback.apply();
-      // }
-    }
-  });
-};
-
-var parsePage = function(data,callback){
-  $ = cheerio.load(data);
-  $(selector).each(function(i) {
-    var $_this = $(this);
-      //parse the timestamp of edit
-      var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
-      if (moment(timestamp).isAfter(dateThresold)) {
-        console.log($_this.find(titleSelector).text());
-        console.log(moment(timestamp).format('h:mm'));
-        mostRecent={"title":$_this.find(titleSelector).text(),"timestamp":moment(timestamp).format('h:mm')};
-        dateThresold = timestamp;
-        if (typeof callback == "function"){
-          callback.apply();
-        };
-      };
-      // console.log(timestamp);
-    });
-};
-*/

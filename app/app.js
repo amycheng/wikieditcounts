@@ -20,22 +20,6 @@ ipList=util.getIP(config.ipBlocks),
 mostRecent,
 dateThresold=config.dateThresold;
 
-/*
-//grab ips to find contributions
-for (var i = 0; i < config.ipBlocks.length; i++) {
-  //build ip address
-  var base=config.ipBlocks[i].ip;
-  var last = config.ipBlocks[i].last;
-  for (var j = 0; j < config.ipBlocks[i].blockSize; j++) {
-    var lastHex=last+j;
-    var ip = base+lastHex.toString();
-    var data;
-    ipList.push(ip);
-  }
-}
-console.log("finished parsing ip blocks!");
-*/
-
 //our server
 var server = http.createServer(function(req, response){
   var path = req.url;
