@@ -1,26 +1,22 @@
 console.log("app running");
 
-//Node.js Dependences
+//dependences for the server
 var http = require('http');
 var fs = require('fs');
 var request = require('request');
 var io = require('socket.io');
+var mime = require('mime');
 
+//custom module with methods
 var util = require('./util');
-
-//util methods
-// var util = require('./util');
 
 //configuration variables
 var config = require('./config');
 
+//app variables
 var
 ipList=util.getIP(config.ipBlocks),
-selector = "#mw-content-text ul li",
-titleSelector = ".mw-contributions-title",
-dateSelector = ".mw-changeslist-date",
-mostRecent,
-dateThresold = "'2010-10-20'"; //test most recent date
+mostRecent="phoo";
 
 /*
 //grab ips to find contributions
@@ -59,23 +55,19 @@ server.listen(9001);
 io = io.listen(server);
 io.sockets.on('connection', function (socket){
       setInterval(function(){
-        /*code for static web development*/
+        //code for static web development
         // mostRecent={"title":"Test Page","timestamp":"10:00"};
         // io.sockets.emit('message', mostRecent);
 
-        /*production code*/
-        for (var i = 0; i < ipList.length; i++) {
+        //production code
+    for (var i = 0; i < ipList.length; i++) {
           var ip = ipList[i];
-          konnect(ip,function(){
-            console.log('phoo');
-            console.log(mostRecent);
-            io.sockets.emit('message', mostRecent);
+          util.connect(ip,function(msg,msgData){
+            // console.log(msg,msgData);
+             // io.sockets.emit('message', "phpp");
+             io.sockets.emit(msg,msgData);
           });
         };
     }, 5000);
 });
-
-
-
-
 
