@@ -6,6 +6,7 @@ var fs = require('fs');
 var request = require('request');
 var io = require('socket.io');
 
+var util = require('./util');
 
 //util methods
 // var util = require('./util');
@@ -14,13 +15,14 @@ var io = require('socket.io');
 var config = require('./config');
 
 var
-ipList=[],
+ipList=util.getIP(config.ipBlocks),
 selector = "#mw-content-text ul li",
 titleSelector = ".mw-contributions-title",
 dateSelector = ".mw-changeslist-date",
 mostRecent,
 dateThresold = "'2010-10-20'"; //test most recent date
 
+/*
 //grab ips to find contributions
 for (var i = 0; i < config.ipBlocks.length; i++) {
   //build ip address
@@ -34,6 +36,7 @@ for (var i = 0; i < config.ipBlocks.length; i++) {
   }
 }
 console.log("finished parsing ip blocks!");
+*/
 
 //our server
 var server = http.createServer(function(req, response){
