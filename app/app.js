@@ -6,6 +6,7 @@ var fs = require('fs');
 var request = require('request');
 var io = require('socket.io');
 var mime = require('mime');
+var moment = require('moment');
 
 //custom module with methods
 var util = require('./util');
@@ -16,7 +17,8 @@ var config = require('./config');
 //app variables
 var
 ipList=util.getIP(config.ipBlocks),
-mostRecent="phoo";
+mostRecent,
+dateThresold=config.dateThresold;
 
 /*
 //grab ips to find contributions
@@ -54,20 +56,22 @@ server.listen(9001);
 //sockets.io stufff
 io = io.listen(server);
 io.sockets.on('connection', function (socket){
-      setInterval(function(){
+  setInterval(function(){
+    console.log("parsing wikipedia");
         //code for static web development
         // mostRecent={"title":"Test Page","timestamp":"10:00"};
         // io.sockets.emit('message', mostRecent);
 
         //production code
-    for (var i = 0; i < ipList.length; i++) {
+        for (var i = 0; i < ipList.length; i++) {
           var ip = ipList[i];
-          util.connect(ip,function(msg,msgData){
-            // console.log(msg,msgData);
-             // io.sockets.emit('message', "phpp");
-             io.sockets.emit(msg,msgData);
-          });
+          util.connect(ip,function(wikiEntry){
+            if (moment(wikiEntry.timestamp).isAfter(dateThresold)===true) {
+              io.sockets.emit("message",wikiEntry);
+              dateThresold=wikiEntry.timestamp;
+            };
+           });
         };
-    }, 5000);
+      }, 5000);
 });
 

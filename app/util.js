@@ -57,7 +57,7 @@ module.exports={
     selector= "#mw-content-text ul li",
     titleSelector= ".mw-contributions-title",
     dateSelector= ".mw-changeslist-date",
-    dateThresold= config.dateThresold;
+    // dateThresold= config.dateThresold;
 
     // method for grabbing the most recently edited, this is an asynchronous method
     // data: the DOM we're navigating
@@ -65,18 +65,21 @@ module.exports={
     $ = cheerio.load(data);
     $(selector).each(function(i) {
       var $_this = $(this);
+      var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
+      var entry = {"title":$_this.find(titleSelector).text(),"timestamp":timestamp};
+
+       if (typeof callback == "function"){
+           callback.call(undefined,entry);
+       };
         //parse the timestamp of edit and compare to our dateThresold
-        var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
-        if (moment(timestamp).isAfter(dateThresold)) {
-          // console.log($_this.find(titleSelector).text());
-          // console.log(moment(timestamp).format('h:mm'));
-          mostRecent={"title":$_this.find(titleSelector).text(),"timestamp":moment(timestamp).format('h:mm')};
-          // console.log("mostRecent:",mostRecent);
-          config.dateThresold = timestamp;
-          if (typeof callback == "function"){
-            callback.call(undefined,"message",mostRecent);
-          };
-        };
+        // var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
+        // if (moment(timestamp).isAfter(dateThresold)) {
+        //   mostRecent={"title":$_this.find(titleSelector).text(),"timestamp":moment(timestamp).format('h:mm')};
+        //   config.dateThresold = timestamp;
+        //   if (typeof callback == "function"){
+        //     callback.call(undefined,mostRecent);
+        //   };
+        // };
       });
   }
 };
