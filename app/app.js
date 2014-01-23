@@ -23,13 +23,19 @@ dateThresold=config.dateThresold;
 //our server
 var server = http.createServer(function(req, response){
   var path = req.url;
-  fs.readFile(__dirname+path,'utf8', function(error, data){
+  var filePath = req.url;
+
+  if(path=='/'){
+    filePath="/index.html";
+  }
+
+  fs.readFile(__dirname+filePath,'utf8', function(error, data){
     if (error){
       console.log(error);
       response.writeHead(404);
       response.write("opps this doesn't exist - 404");
-    }
-    else{
+      return;
+      }else{
       response.writeHead(200, {"Content-Type": mime.lookup(path)});
       response.write(data, "utf8");
       response.end();
@@ -41,7 +47,6 @@ server.listen(9001);
 io = io.listen(server);
 io.sockets.on('connection', function (socket){
   setInterval(function(){
-    console.log("parsing wikipedia");
         //code for static web development
         // mostRecent={"title":"Test Page","timestamp":"10:00"};
         // io.sockets.emit('message', mostRecent);
