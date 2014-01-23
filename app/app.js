@@ -33,7 +33,7 @@ var server = http.createServer(function(req, response){
       response.writeHead(404);
       response.write("opps this doesn't exist - 404");
       return;
-      }else{
+    }else{
       response.writeHead(200, {"Content-Type": mime.lookup(filePath)});
       response.write(data, "utf8");
       response.end();
@@ -43,7 +43,9 @@ var server = http.createServer(function(req, response){
 server.listen(9001);
 //sockets.io stufff
 io = io.listen(server);
+// io.set('log level', 1);
 io.sockets.on('connection', function (socket){
+  console.log("sockets.io initialized");
   setInterval(function(){
         //code for static web development
         // mostRecent={"title":"Test Page","timestamp":"10:00"};
@@ -54,10 +56,16 @@ io.sockets.on('connection', function (socket){
           var ip = ipList[i];
           util.connect(ip,function(wikiEntry){
             if (moment(wikiEntry.timestamp).isAfter(dateThresold)===true) {
-              io.sockets.emit("message",wikiEntry);
-              dateThresold=wikiEntry.timestamp;
-            };
-           });
+             io.sockets.emit("entry",wikiEntry);
+             util.getWiki(wikiEntry.title,function(imgPath){
+              // console.log(imgPath);
+              if (imgPath) {
+                io.sockets.emit("wiki_content",{"image":imgPath,"title":wikiEntry.title});
+              };
+            });
+             dateThresold=wikiEntry.timestamp;
+           };
+         });
         };
       }, 5000);
 });
