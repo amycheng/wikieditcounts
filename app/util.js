@@ -43,11 +43,16 @@ module.exports={
     //method for grabbing Wikipedia content
     //title is the title of the wikipedia entry
     wikijs.page(title, function(err, data){
-      data.images(function(err, content){
-        console.log(content);
-        if (typeof callback == "function"){
-          callback.apply();
-        }
+      data.html(function(err, content){
+        $ = cheerio.load(content);
+        var imgPath= $('.infobox').find('tr:nth-child(2)').find('td').find('a').find('img').attr('src');
+        imgPath=imgPath.substr(2);
+        return imgPath;
+        console.log(imgPath);
+        // console.log(content);
+      //   if (typeof callback == "function"){
+      //     callback.apply();
+      //   }
       });
     });
   },
