@@ -3,9 +3,12 @@ var config = {};
 config.ipBlocks=
 //"last" describes the last two digits of the ip address
 //"ip" should be the first ip address in the block
+//"dateThresold" all edits made after this date will be pushed to the DOM
 [
   {"ip":"00.000.000.","last":00,"blockSize":00},
   {"ip":"00.000.000.","last":00,"blockSize":00}
 ];
+
+config.dateThresold = "2010-10-10";
 
 module.exports = config;
