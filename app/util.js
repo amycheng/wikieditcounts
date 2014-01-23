@@ -47,13 +47,13 @@ module.exports={
         $ = cheerio.load(content);
         var imgPath= $('.infobox').find('tr:nth-child(2)').find('td').find('a').find('img').attr('src');
         imgPath=imgPath.substr(2);
-        return imgPath;
         console.log(imgPath);
+        return imgPath;
         // console.log(content);
       //   if (typeof callback == "function"){
       //     callback.apply();
       //   }
-      });
+    });
     });
   },
   parse: function(data,callback){
@@ -70,9 +70,9 @@ module.exports={
       var $_this = $(this);
       var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
       var entry = {"title":$_this.find(titleSelector).text(),"timestamp":timestamp};
-       if (typeof callback == "function"){
-           callback.call(undefined,entry);
-       };
-      });
+      if (typeof callback == "function"){
+       callback.call(undefined,entry);
+     };
+   });
   }
 };
