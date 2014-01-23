@@ -25,18 +25,16 @@ var server = http.createServer(function(req, response){
   var path = req.url;
   var filePath = req.url;
 
-  if(path=='/'){
+  if(path=='/'||path=='/index.html'){
     filePath="/index.html";
   }
-
   fs.readFile(__dirname+filePath,'utf8', function(error, data){
     if (error){
-      console.log(error);
       response.writeHead(404);
       response.write("opps this doesn't exist - 404");
       return;
       }else{
-      response.writeHead(200, {"Content-Type": mime.lookup(path)});
+      response.writeHead(200, {"Content-Type": mime.lookup(filePath)});
       response.write(data, "utf8");
       response.end();
     }
