@@ -46,13 +46,10 @@ module.exports={
       data.html(function(err, content){
         $ = cheerio.load(content);
         var imgPath= $('.infobox').find('tr:nth-child(2)').find('td').find('a').find('img').attr('src');
-        imgPath=imgPath.substr(2);
-        console.log(imgPath);
-        return imgPath;
-        // console.log(content);
-      //   if (typeof callback == "function"){
-      //     callback.apply();
-      //   }
+        if (typeof callback == "function"){
+          callback.call(undefined,imgPath);
+        }
+        return;
     });
     });
   },
