@@ -3,31 +3,49 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Art + Feminism Wikipedia Edit-a-Thon</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="/style.css">
-        <script src="/socket.io/socket.io.js"></script>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Art + Feminism Wikipedia Edit-a-Thon</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/socket.io/socket.io.js"></script>
 
-    </head>
-    <body>
+</head>
+<body>
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
-        <h1>Art + Feminism Wikipedia Edit-a-Thon</h1>
-        <div id="stream">
-            <h2>Recent Edits</h2>
-            <ul id="changes">
-            </ul>
-        </div>
-        <div id="wikicontent">
-            <h2>Title</h2>
-            <img src="">
-        </div>
-        <script src="main.js"></script>
+            <![endif]-->
+            <div class="container">
+                <header>
+                    <div class="title-wrapper">
+                       <h1> Art + Feminism Wikipedia Edit-a-thon</h1>
+                   </div>
+                   <div class="copy-wrapper">
+                        <p class="copy">
+                            The Elizabeth A. Sackler Center for Feminist Art, Project Continua and Eyebeam have teamed up to help correct Wikipedia’s pervasive gender bias and inaccuracies. Join us as we add authoritative biographical information about largely overlooked feminist figures on Wikipedia.
+                        </p>
+                    </div>
+                </header>
+                <div role="main">
+                    <div class="timestamp">
+                        <p id="js-timestamp">Febuary 1 2014, 12:00pm</p>
+                    </div>
+                    <div class="page-count">
+                        <h2># of pages edited today: <span class="count" id="js-count">00</span></h2>
+                    </div>
+                    <div class="stream">
+                        <h2>Pages recently edited</h2>
+                        <div class="changes-wrapper">
+                            <ul id="js-changes">
+                                <!-- placeholder content do the site isn't blank on load!-->
+                                <li><a href="http://en.wikipedia.org/wiki/Elizabeth_A._Sackler_Center_for_Feminist_Art" target="_blank">Elizabeth A. Sackler Center for Feminist Art</a></li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+            <script src="main.js"></script>
 <!--
         <script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
@@ -35,6 +53,6 @@
             g.src='//www.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));
         </script>
-!-->
+        !-->
     </body>
-</html>
+    </html>

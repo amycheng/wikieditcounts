@@ -1,5 +1,116 @@
 @import 'normalize';
 
+/*variables*/
+$highlightColor: #D6006E; /*magenta from the Brooklyn Museum style guide*/
+
+html,body {
+  // height: 100%;
+}
+
+body {
+  font-size: 16px;
+}
+
+
+.container {
+  margin: 1em 5% 0 5%;
+  // max-height: 100%;
+  overflow: hidden;
+}
+
+header{
+  margin-top: 1em;
+  border-top: 2px solid $highlightColor;
+  padding: 1em 0;
+  &:after {
+   content: ".";
+   visibility: hidden;
+   display: block;
+   height: 0;
+   clear: both;
+ }
+ .title-wrapper {
+  @media screen and (min-width: 489px) {
+  width: 50%;
+  display: inline-block;
+  float: left;
+  }
+}
+.copy-wrapper {
+  @media screen and (min-width: 489px) {
+  width: 45%;
+  margin-left: 5%;
+  display: inline-block;
+  }
+
+}
+h1 {
+  color: $highlightColor;
+  text-transform: uppercase;
+  margin: 0;
+}
+.copy {
+  margin: 0;
+}
+}
+
+.timestamp {
+  border-top: 2px solid $highlightColor;
+  color: $highlightColor;
+  p {
+    font-size: 1.5em;
+  }
+}
+
+.page-count
+{
+  border-top: 2px solid $highlightColor;
+  h2 {
+    text-transform: uppercase;
+    font-weight: normal;
+  }
+  .count {
+    color: $highlightColor;
+  }
+}
+
+.stream{
+  border-top: 2px solid $highlightColor;
+  border-bottom: 2px solid $highlightColor;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+
+  .changes-wrapper {
+    @media screen and (min-width: 540px) {
+      -moz-column-count: 2;
+      -moz-column-gap: 20px;
+      -webkit-column-count: 2;
+      -webkit-column-gap: 20px;
+      column-count: 2;
+      column-gap: 20px;
+    }
+
+  }
+  h2 {
+    font-weight: normal;
+  }
+  ul {
+    color: $highlightColor;
+    font-family: serif;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li {
+      font-size: 1.25em;
+      margin-bottom: 1em;
+      a {
+        text-decoration: none;
+        color: $highlightColor;
+      }
+    }
+  }
+}
+/*
 #stream {
   border: 1px solid #333;
   width: 60%;
@@ -11,3 +122,4 @@
   width: 30%;
   float: left;
 }
+*/

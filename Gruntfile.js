@@ -22,6 +22,7 @@ module.exports = function(grunt) {
           js: {
             src: [
             'dev/jquery.min.js',
+            'dev/flowtype.js',
             'dev/main.js'
             ],
             dest: 'app/main.js',
