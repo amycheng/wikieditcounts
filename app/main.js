@@ -69,7 +69,6 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
 var minWidth= 480; //mobile in portrait
 var pageTotal= 0;
 var renderText = function(){
-  console.log("making type responsive because why not?");
   $('.title-wrapper').flowtype({
     minimum : minWidth,
     fontRatio: 20,
@@ -95,10 +94,13 @@ var renderText = function(){
 
   socket.on('entry', function (data) {
     console.log(data);
+    var entry =
+    $('<li><a href="http://en.wikipedia.org/wiki/'+data.title.replace(/ /g,"_")+'" target="_blank">'+data.title+'</a></li>').hide();
+
     if ($list.find('li').length>0) {
-      $list.find('li:first').before('<li><a href="http://en.wikipedia.org/wiki/'+data.title.replace(/ /g,"_")+'" target="_blank">'+data.title+'</a></li>');
+      $list.find('li:first').before(entry.fadeIn(1000));
     }else{
-      $list.append('<li><a href="http://en.wikipedia.org/wiki/'+data.title.replace(/ /g,"_")+'" target="_blank">'+data.title+'</a></li>');
+      $list.append(entry.fadeIn(1000));
     }
     console.log($('#js-timestamp').text());
     $('#js-timestamp').text(data.timestamp);
