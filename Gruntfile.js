@@ -80,4 +80,5 @@ grunt.loadNpmTasks('grunt-contrib-concat');
 grunt.registerTask('test', ['jasmine_node']);
 grunt.registerTask('node',['forever:start','watch:node']);
 grunt.registerTask('static',['connect','watch']);
+grunt.registerTask('js',['watch:js']);
 };
