@@ -18,7 +18,8 @@ var config = require('./config');
 var
 ipList=util.getIP(config.ipBlocks),
 mostRecent,
-dateThresold=config.dateThresold;
+dateThresold=moment(config.dateThresold,"HH:mm D MMMM YYYY"),
+cache = [];
 
 //our server
 var server = http.createServer(function(req, response){
@@ -44,29 +45,41 @@ server.listen(9001);
 //sockets.io stufff
 io = io.listen(server);
 // io.set('log level', 1);
-io.sockets.on('connection', function (socket){
-  console.log("sockets.io initialized");
-  setInterval(function(){
-        //code for static web development
-        // mostRecent={"title":"Test Page","timestamp":"10:00"};
-        // io.sockets.emit('message', mostRecent);
+var scrape = function(){
 
         //production code
         for (var i = 0; i < ipList.length; i++) {
           var ip = ipList[i];
           util.connect(ip,function(wikiEntry){
-            if (moment(wikiEntry.timestamp).isAfter(dateThresold)===true) {
-             io.sockets.emit("entry",wikiEntry);
-             util.getWiki(wikiEntry.title,function(imgPath){
-              // console.log(imgPath);
-              if (imgPath) {
-                io.sockets.emit("wiki_content",{"image":imgPath,"title":wikiEntry.title});
+            var data= wikiEntry;
+              if ((wikiEntry.timestamp).isAfter(dateThresold)) {
+                dateThresold=wikiEntry.timestamp;
+                cache.push(data);
+                data.timestamp= moment(wikiEntry.timestamp).format('MMMM Do YYYY, h:mm:ss a');
+                console.log(data);
+
+                io.sockets.emit("entry",data);
+                io.sockets.emit('pageCount',cache.length);
               };
-            });
-             dateThresold=wikiEntry.timestamp;
-           };
-         });
-        };
-      }, 5000);
+          });
+};
+
+};
+
+io.sockets.on('connection', function (socket){
+  console.log("sockets.io initialized");
+  if (cache.length>0) {
+    console.log("downloading cache");
+    for (var i = 0; i < cache.length; i++) {
+     io.sockets.emit('entry', cache[i]);
+   };
+   io.sockets.emit('pageCount',cache.length);
+ };
+ scrape();
+
+ setInterval(function(){
+  console.log("ping");
+  scrape();
+}, 5000);
 });
 
