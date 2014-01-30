@@ -23,6 +23,9 @@ var renderText = function(){
   var socket = io.connect('http://localhost');
   var $list = $('#js-changes');
 
+  socket.on('pageCount', function (data) {
+    $('#js-count').text(data);
+  });
 
   socket.on('entry', function (data) {
     console.log(data);
@@ -33,8 +36,6 @@ var renderText = function(){
     }
     console.log($('#js-timestamp').text());
     $('#js-timestamp').text(data.timestamp);
-    pageTotal++;
-    $('#js-count').text(pageTotal);
   });
 
 $( document ).ready(function() {
