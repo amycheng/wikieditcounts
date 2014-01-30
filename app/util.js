@@ -39,6 +39,8 @@ module.exports={
     console.log("finished parsing ip blocks!");
     return list;
   },
+  /*
+  //not using this  method
   getWiki: function(title,callback){
     //method for grabbing Wikipedia content
     //title is the title of the wikipedia entry
@@ -53,10 +55,12 @@ module.exports={
     });
     });
   },
+  */
   parse: function(data,callback){
-    //grab link
+    // grab link
     // method for grabbing the most recently edited, this is an asynchronous method
     // data: the DOM we're navigating, we're getting this from connect()
+
     //DOM selectors for the wikipedia page
     var
     selector= "#mw-content-text ul li",
@@ -65,6 +69,7 @@ module.exports={
 
     $ = cheerio.load(data);
 
+    // parsing the DOM backwards because the list of changes is in descending order and we want to append in ascending order
     for (var i = $(selector).length - 1; i >= 0; i--) {
       var $_this = $(selector).eq(i);
       var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
@@ -73,16 +78,5 @@ module.exports={
        callback.call(undefined,entry);
      };
     };
-
-/*
-    $(selector).each(function(i) {
-      var $_this = $(this);
-      var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
-      var entry = {"title":$_this.find(titleSelector).text(),"timestamp":timestamp};
-      if (typeof callback == "function"){
-       callback.call(undefined,entry);
-     };
-   });
-    */
   }
 };
