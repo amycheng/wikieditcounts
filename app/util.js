@@ -54,6 +54,7 @@ module.exports={
     });
   },
   parse: function(data,callback){
+    //grab link
     // method for grabbing the most recently edited, this is an asynchronous method
     // data: the DOM we're navigating, we're getting this from connect()
     //DOM selectors for the wikipedia page
@@ -63,6 +64,17 @@ module.exports={
     dateSelector= ".mw-changeslist-date";
 
     $ = cheerio.load(data);
+
+    for (var i = $(selector).length - 1; i >= 0; i--) {
+      var $_this = $(selector).eq(i);
+      var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
+      var entry = {"title":$_this.find(titleSelector).text(),"timestamp":timestamp};
+      if (typeof callback == "function"){
+       callback.call(undefined,entry);
+     };
+    };
+
+/*
     $(selector).each(function(i) {
       var $_this = $(this);
       var timestamp = moment($_this.find(dateSelector).text(),"HH:mm D MMMM YYYY");
@@ -71,5 +83,6 @@ module.exports={
        callback.call(undefined,entry);
      };
    });
+    */
   }
 };
