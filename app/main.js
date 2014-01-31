@@ -51,13 +51,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
 // Make the magic visible
 // ======================
       return this.each(function() {
-         
+
       // Context for resize callback
          var that = this;
-         
+
       // Set changes on load
          changes(this);
-         
+
       // Make changes upon resize
          $(window).resize(function(){changes(that);});
       });
@@ -84,6 +84,8 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
     });
   };
 
+
+/*
   //socket.io stuff
   var socket = io.connect('http://localhost');
   var $list = $('#js-changes');
@@ -105,10 +107,30 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
     console.log($('#js-timestamp').text());
     $('#js-timestamp').text(data.timestamp);
   });
+*/
+var ping = function(){
+  console.log("pinging our api");
+  var $list = $('#js-changes');
 
-  $( document ).ready(function() {
-    console.log('running scripts');
-    renderText();
-  });
+  $.get( "api", function( data ) {
+    $.each(data.entries, function(index, item) {
+    var entry =
+    $('<li><a href="http://en.wikipedia.org/wiki/'+item.title.replace(/ /g,"_")+'" target="_blank">'+item.title+'</a></li>').hide();
+      if ($list.find('li').length>0) {
+        $list.find('li:first').before(entry.fadeIn(1000));
+      }else{
+        $list.append(entry.fadeIn(1000));
+      }
+      $('#js-timestamp').text(data.timestamp);
+    });
+    $('#js-count').text(data.entries.length);
+ });
+}
+
+$( document ).ready(function() {
+  console.log('running scripts');
+  ping();
+  renderText();
+});
 }(jQuery));
 

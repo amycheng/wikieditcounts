@@ -18,6 +18,8 @@
     });
   };
 
+
+/*
   //socket.io stuff
   var socket = io.connect('http://localhost');
   var $list = $('#js-changes');
@@ -39,10 +41,18 @@
     console.log($('#js-timestamp').text());
     $('#js-timestamp').text(data.timestamp);
   });
+*/
+$( document ).ready(function() {
+  var $list = $('#js-changes');
 
-  $( document ).ready(function() {
-    console.log('running scripts');
-    renderText();
-  });
+  $.get( "api", function( data ) {
+   $.each(data.entries, function(index, item) {
+    console.log(item);
+   });
+    $('#js-timestamp').text(data.entries.length);
+ });
+  console.log('running scripts');
+  renderText();
+});
 }(jQuery));
 
