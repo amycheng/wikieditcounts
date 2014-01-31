@@ -108,28 +108,46 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
     $('#js-timestamp').text(data.timestamp);
   });
 */
+var counter = 0;
 var ping = function(){
   console.log("pinging our api");
   var $list = $('#js-changes');
 
   $.get( "api", function( data ) {
-    $.each(data.entries, function(index, item) {
-    var entry =
-    $('<li><a href="http://en.wikipedia.org/wiki/'+item.title.replace(/ /g,"_")+'" target="_blank">'+item.title+'</a></li>').hide();
+
+    if (data.entries.length!=counter) {
+    console.log("appending data");
+    for (var i = counter; i<data.entries.length; i++) {
+      var item = data.entries[i];
+      var entry = $('<li><a href="http://en.wikipedia.org/wiki/'+item.title.replace(/ /g,"_")+'" target="_blank">'+item.title+'</a></li>').hide();
       if ($list.find('li').length>0) {
         $list.find('li:first').before(entry.fadeIn(1000));
       }else{
         $list.append(entry.fadeIn(1000));
       }
-      $('#js-timestamp').text(data.timestamp);
-    });
+      $('#js-timestamp').text(item.timestamp);
+      counter++;
+    };
+    console.log("counter:",counter);
     $('#js-count').text(data.entries.length);
+    };
+ }
+
+ ).fail(function(){
+  return;
  });
+
+
 }
 
 $( document ).ready(function() {
   console.log('running scripts');
   ping();
+  setInterval(function(){
+    ping();
+  }, 5000);
+
+
   renderText();
 });
 }(jQuery));
